@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#090c1b" />
+  <title>Lendas da Ruptura — Protótipo 0.1</title>
+  <style>
+:root{color-scheme:dark;--bg:#070a16;--panel:#151a32;--surface:#1c2440;--red:#ec4860;--ruby:#ff707c;--violet:#9c81ff;--text:#f4f4ff;--muted:#a0a6bd;--gold:#ecc173}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--text);background:#080d20}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid #ffadbf}canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block;touch-action:none}body:not(.playing) #field{opacity:.48;filter:blur(2px)}.shell{position:absolute;inset:0;overflow:auto;background:radial-gradient(ellipse 60% 80% at 72% 38%,rgba(142,51,113,.30),transparent 72%),linear-gradient(120deg,rgba(7,9,25,.96) 20%,rgba(9,12,29,.76) 65%,rgba(10,12,32,.93))}.topbar{height:80px;display:flex;justify-content:space-between;align-items:center;padding:0 clamp(16px,5vw,72px);border-bottom:1px solid #ffffff11}.brand{display:flex;gap:12px;align-items:center}.emblem{display:grid;place-items:center;width:43px;height:43px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);background:linear-gradient(160deg,#e85e6a,#7d54aa);font-size:26px}.brand b{font-size:clamp(14px,1.65vw,22px);letter-spacing:1.2px}.brand b span{color:#ff6a80}.brand small{display:block;letter-spacing:2.4px;font-size:9px;color:#acacc9;margin-top:2px}.wallet{display:flex;gap:14px;align-items:center;font-size:13px}.wallet>span{background:#171b33;border:1px solid #ffffff12;padding:8px 11px;border-radius:8px;color:var(--gold)}.wallet .diamond{color:#b6a4ff}.outline,.primary{border-radius:9px;padding:12px 19px;font-size:12px;font-weight:850;letter-spacing:.8px}.outline{color:var(--text);border:1px solid #8791b655;background:#1d233a7c}.outline.sm{padding:8px 12px}.primary{border:1px solid #ff8291;background:linear-gradient(110deg,#ad2e53,#fa5969);color:white;box-shadow:0 9px 26px #ce3d6155}.heroBlock{position:relative;max-width:1050px;margin:clamp(20px,5vh,55px) auto 12px;padding:0 clamp(20px,5vw,70px)}.heroBlock::after{content:'✦';font-family:serif;font-size:clamp(160px,30vw,400px);line-height:1;position:absolute;right:-4%;top:-70px;color:#f16e9133;text-shadow:0 0 90px #d4337055;pointer-events:none;transform:rotate(-12deg)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--ruby);font-weight:800}.heroBlock h1{margin:8px 0 12px;font-weight:900;font-size:clamp(29px,5.3vw,60px);line-height:1.04;letter-spacing:-2px;position:relative;z-index:1}.heroBlock h1 em{font-style:normal;color:#f77a93}.heroBlock p{max-width:490px;color:#b6bbd2;line-height:1.55;font-size:clamp(12px,1.4vw,15px)}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;position:relative;z-index:1}.notice{color:#a49bb1;font-size:9px;letter-spacing:1.3px;margin-top:20px}.bottomPanel{max-width:1150px;margin:0 auto;padding:10px clamp(18px,5vw,66px) 18px}.panelheading{display:flex;align-items:center;justify-content:space-between;letter-spacing:2px;font-weight:800;font-size:11px;color:#e8d0e0}.textbtn{background:none;color:#b9adff;border:0;font-size:10px;font-weight:700}.featured{display:flex;gap:10px;overflow-x:auto;padding:9px 0 13px;scrollbar-width:thin}.heroCard{flex:0 0 154px;height:116px;position:relative;border-radius:12px;overflow:hidden;border:1px solid #ffffff25;background:linear-gradient(135deg,var(--h),#12172b 65%);text-align:left;padding:10px;color:white;transition:transform .12s}.heroCard:active{transform:scale(.97)}.heroCard .portrait{font-size:54px;position:absolute;right:2px;bottom:-8px;filter:drop-shadow(0 5px 20px #0007)}.heroCard strong{font-size:15px;position:absolute;bottom:26px;z-index:1;text-shadow:0 2px 6px #000}.heroCard small{position:absolute;bottom:10px;color:#e2d9e8;font-size:10px;z-index:1}.heroCard .lock{position:absolute;top:9px;right:8px;color:#f7c27e;font-size:11px}.heroCard.active{border-color:#ff6c90;box-shadow:inset 0 0 0 1px #ff688e}.quicknav{display:flex;gap:9px}.quicknav button{flex:1;min-height:38px;background:#20233b;border:1px solid #77779e30;border-radius:8px;color:#ddd8e9;font-size:10px;letter-spacing:.8px;font-weight:700}.overlay{position:fixed;inset:0;z-index:15;display:grid;place-items:center;background:#030510d9;backdrop-filter:blur(7px);padding:14px}.dialog{width:min(730px,96vw);max-height:calc(100dvh - 25px);background:linear-gradient(140deg,#161b34,#0d1127);border:1px solid #ffffff2c;border-radius:16px;box-shadow:0 20px 90px #000b;display:flex;flex-direction:column;overflow:hidden}.dialogHead{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:17px 19px 12px;border-bottom:1px solid #ffffff15}.dialogHead h2{margin:3px 0 0;font-size:24px}.close{font-size:18px;color:#cbd0e6;background:#242944;border:0;border-radius:9px;width:34px;height:34px}.dialogBody{overflow:auto;padding:16px 19px 24px}.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:10px}.shopcard{padding:13px;border:1px solid #ffffff1e;background:#232740b8;border-radius:11px;min-height:130px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.shopcard b{font-size:17px}.shopcard .badge{font-size:10px;color:#ffbbd0}.shopcard .describe{font-size:11px;color:#aeb5cd;flex:1;line-height:1.4}.shopcard button{border:0;background:linear-gradient(120deg,#9a3158,#c84b69);color:white;padding:8px 10px;border-radius:7px;font-size:10px;font-weight:900;min-height:30px}.shopcard button:disabled{opacity:.55;cursor:not-allowed}.shopcard button.alt{background:#3e4362}.pill{font-size:9px;padding:3px 6px;border:1px solid #7e729f88;background:#252444;color:#ddd3ef;border-radius:100px}.sectiontitle{font-weight:850;color:#ffc1d0;margin:12px 0;font-size:12px;letter-spacing:1.1px}.bodycopy{color:#b6bad0;font-size:12px;line-height:1.55}.tabs{display:flex;gap:6px;margin-bottom:15px;flex-wrap:wrap}.tabs button{border:1px solid #ffffff22;border-radius:7px;padding:9px 13px;background:#20263f;color:#b9bdd3;font-size:11px}.tabs button.active{background:#a83860;color:white;border-color:#f36b8a}.modalFooter{padding-top:14px;font-size:11px;color:#b5adca}#hud{position:fixed;inset:0;pointer-events:none;z-index:4}.hudtop{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;min-height:55px;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:8px 15px;background:linear-gradient(#080c20e0,#080c2080);pointer-events:none}.hudstatus{width:155px;max-width:32vw}.hudstatus strong{font-size:12px}.hudstatus>span{color:#c6b5ee;font-size:9px;padding-left:6px}.hp,.xp{height:6px;border-radius:20px;background:#451d37;margin-top:4px;overflow:hidden}.xp{height:3px;background:#302946}#hpBar,#xpBar{display:block;width:100%;height:100%;background:linear-gradient(90deg,#f2525f,#f99b73);transition:width .15s}#xpBar{background:#a892fc}.timer{font-size:17px;font-weight:800;color:white;font-variant-numeric:tabular-nums}.score{display:flex;gap:16px;font-size:12px;font-variant-numeric:tabular-nums}.blue{color:#8fbcff}.red{color:#ff8a93}.iconbtn{pointer-events:auto;border:1px solid #ffffff44;border-radius:8px;background:#1d2246;color:white;padding:8px 12px}.battleInfo{position:absolute;top:62px;left:50%;transform:translateX(-50%);padding:5px 12px;border-radius:20px;background:#161a36c9;color:#fff2c6;font-size:10px;white-space:nowrap}.joystick{position:absolute;bottom:clamp(12px,7vh,40px);left:clamp(12px,6vw,70px);width:clamp(96px,15vw,140px);height:clamp(96px,15vw,140px);border-radius:50%;border:3px solid #c0b0ff55;background:#55517e22;pointer-events:auto;touch-action:none;display:grid;place-items:center}#stick{width:44%;height:44%;border:3px solid #ffe0ff88;border-radius:50%;background:#a77cc955;box-shadow:0 0 20px #b769db66;pointer-events:none}.skills{position:absolute;bottom:clamp(9px,7vh,40px);right:clamp(12px,5vw,65px);display:flex;gap:10px;align-items:end;pointer-events:auto}.skill{width:clamp(43px,6.4vw,66px);height:clamp(43px,6.4vw,66px);border-radius:50%;background:radial-gradient(#6a508d,#1e2246);color:#fff1ff;border:2px solid #ac8de3a8;font-size:23px;position:relative;font-weight:850;box-shadow:0 0 25px #0007}.skill.attack{width:clamp(57px,8.5vw,82px);height:clamp(57px,8.5vw,82px);border-color:#ffbb9d;background:radial-gradient(#c2555a,#6f274d)}.skill.ultimate{border-color:#eab97f;background:radial-gradient(#b6764e,#43294f)}.skill small{display:block;position:absolute;bottom:-16px;left:0;right:0;font-size:9px;color:#fff;font-weight:700}.skill.onCooldown::after{content:attr(data-cd);position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;background:#070b19bd;font-size:15px;color:#ffe0ee}.minihelp{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);font-size:9px;color:#d2cbdc;white-space:nowrap;opacity:.75}.toast{position:fixed;z-index:50;top:50%;left:50%;transform:translate(-50%,-50%);background:#282342f3;border:1px solid #f4a6be80;border-radius:10px;color:#ffe2eb;padding:12px 18px;font-size:13px;box-shadow:0 10px 40px #000a;max-width:80vw;text-align:center}.hidden{display:none!important}body.playing #menu{display:none}body.playing #field{opacity:1;filter:none}@media(max-height:480px){.topbar{height:59px}.heroBlock{margin:12px auto 0}.heroBlock h1{font-size:clamp(27px,4.1vw,46px)}.heroBlock p{font-size:11px;margin:7px 0}.heroBlock .actions{margin-top:13px}.heroBlock .notice{margin-top:11px}.heroCard{height:91px;flex-basis:135px}.heroCard .portrait{font-size:41px}.bottomPanel{padding-top:6px}.quicknav button{min-height:30px}.minihelp{display:none}}@media(max-width:600px){.wallet{gap:6px}.wallet>span{padding:7px;font-size:10px}.wallet button{display:none}.topbar{padding:0 14px}.brand b{font-size:13px}.emblem{width:34px;height:34px}.heroBlock h1{letter-spacing:-1px}.score{gap:5px;font-size:10px}}
+
+</style>
+</head>
+<body>
+  <canvas id="field" aria-label="Arena de batalha de Lendas da Ruptura"></canvas>
+  <main id="menu" class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="emblem">✦</div><div><b>LENDAS DA <span>RUPTURA</span></b><small>ARENA · PRÉ-ALFA 0.1</small></div></div>
+      <div class="wallet"><span>◈ <b id="gold">0</b></span><span class="diamond">◆ <b id="gems">0</b></span><button class="outline sm" id="openStore">LOJA</button></div>
+    </header>
+    <section class="heroBlock">
+      <div class="eyebrow">UM NOVO UNIVERSO DE GUARDIÕES</div>
+      <h1>O destino da arena<br><em>está em suas mãos.</em></h1>
+      <p>Escolha sua lenda. Defenda o núcleo. Derrote os inimigos e conquiste o campo de batalha.</p>
+      <div class="actions"><button class="primary" id="play">⚔ ENTRAR NA ARENA</button><button class="outline" id="openHeroes">HERÓIS <span id="heroCount"></span></button></div>
+      <div class="notice">PROTÓTIPO JOGÁVEL · PARTIDAS CONTRA BOTS · COMPRAS REAIS DESATIVADAS</div>
+    </section>
+    <div class="bottomPanel">
+      <div class="panelheading"><span>ESCOLHA SEU HERÓI</span><button class="textbtn" id="viewRoster">VER TODOS ↗</button></div>
+      <div id="featured" class="featured"></div>
+      <div class="quicknav"><button id="openWeapons">⚒ EQUIPAMENTOS</button><button id="openPass">✧ PASSES</button><button id="openAchievements">★ CONQUISTAS</button></div>
+    </div>
+  </main>
+  <div id="overlay" class="overlay hidden"><div class="dialog"><div class="dialogHead"><div><div class="eyebrow" id="modalCaption">SISTEMA</div><h2 id="modalTitle">Loja</h2></div><button class="close" id="closeModal" aria-label="Fechar">✕</button></div><div id="modalBody" class="dialogBody"></div></div></div>
+  <section id="hud" class="hidden" aria-label="Informações de partida">
+    <div class="hudtop"><div class="hudstatus"><strong id="hudHero">—</strong><span id="hudLevel">NÍVEL 1</span><div class="hp"><i id="hpBar"></i></div><div class="xp"><i id="xpBar"></i></div></div><div id="timer" class="timer">00:00</div><div class="score"><span class="blue">◉ <b id="blueScore">100%</b></span><span class="red">◉ <b id="redScore">100%</b></span></div><button id="quit" class="iconbtn" title="Sair da partida">☷</button></div>
+    <div class="battleInfo" id="battleInfo">Defenda seu núcleo e destrua o núcleo inimigo.</div>
+    <div class="joystick" id="joystick"><div id="stick"></div></div>
+    <div class="skills"><button class="skill attack" id="attack">⚔<small>ATAQUE</small></button><button class="skill" id="skill1">✦<small>Q</small></button><button class="skill" id="skill2">✧<small>W</small></button><button class="skill ultimate" id="skill3">✺<small>R</small></button></div>
+    <div class="minihelp">Arraste o direcional para mover · use os botões para atacar</div>
+  </section>
+  <div id="toast" class="toast hidden"></div>
+  <script>
+/* Lendas da Ruptura — protótipo original 0.1.
+   Offline, somente PvE. Nenhum pagamento real ou multiplayer aqui. */
+'use strict';
+const $ = id => document.getElementById(id);
+const canvas = $('field'), ctx = canvas.getContext('2d', {alpha:false});
+const W=1820,H=980, BLUE={x:170,y:770},RED={x:1650,y:170};
+const heroes=[
+ {id:'kael',name:'Kael',role:'Guerreiro',icon:'⚔',color:'#ce597a',hp:350,atk:33,spd:205,range:112,price:0,power:'Investida Escarlate'},
+ {id:'lyria',name:'Lyria',role:'Maga',icon:'✧',color:'#a07fff',hp:265,atk:40,spd:205,range:250,price:0,power:'Estrela Lunar'},
+ {id:'nyra',name:'Nyra',role:'Atiradora',icon:'➶',color:'#65c4df',hp:280,atk:35,spd:220,range:290,price:0,power:'Flecha Prismática'},
+ {id:'dorn',name:'Dorn',role:'Tanque',icon:'⛨',color:'#be9871',hp:510,atk:24,spd:165,range:100,price:700,power:'Muralha de Ferro'},
+ {id:'seris',name:'Seris',role:'Suporte',icon:'✿',color:'#62c9aa',hp:295,atk:26,spd:210,range:230,price:700,power:'Aurora Restauradora'},
+ {id:'vex',name:'Vex',role:'Assassino',icon:'⟡',color:'#f274a5',hp:260,atk:46,spd:247,range:110,price:900,power:'Corte das Sombras'},
+ {id:'oran',name:'Oran',role:'Guerreiro',icon:'◆',color:'#e8ab69',hp:370,atk:31,spd:195,range:125,price:900,power:'Terremoto'},
+ {id:'eiko',name:'Eiko',role:'Maga',icon:'☾',color:'#958afa',hp:268,atk:43,spd:198,range:265,price:1100,power:'Eclipse Arcano'},
+ {id:'astra',name:'Astra',role:'Atiradora',icon:'✹',color:'#efaa60',hp:280,atk:38,spd:218,range:310,price:1100,power:'Rajada Solar'},
+ {id:'thorin',name:'Thorin',role:'Tanque',icon:'⬡',color:'#a9c68f',hp:560,atk:24,spd:161,range:110,price:1200,power:'Fortaleza Viva'},
+ {id:'mira',name:'Mira',role:'Suporte',icon:'❀',color:'#eaa9db',hp:290,atk:29,spd:214,range:245,price:1200,power:'Véu Celeste'},
+ {id:'riven',name:'Riven',role:'Assassino',icon:'⤨',color:'#f66a75',hp:273,atk:48,spd:245,range:118,price:1400,power:'Passo Fantasma'},
+ {id:'solan',name:'Solan',role:'Guerreiro',icon:'☀',color:'#ebba61',hp:365,atk:35,spd:198,range:125,price:1400,power:'Fúria do Alvorecer'},
+ {id:'lume',name:'Lume',role:'Maga',icon:'✷',color:'#62afeb',hp:272,atk:44,spd:204,range:270,price:1600,power:'Tempestade Azul'},
+ {id:'zel',name:'Zel',role:'Atirador',icon:'➤',color:'#90eab6',hp:300,atk:40,spd:218,range:315,price:1600,power:'Disparo do Horizonte'}
+];
+const weapons=[
+ {id:'blade',name:'Lâmina da Ruptura',icon:'⚔',price:350,description:'+8 dano por ataque',stat:'atk',value:8},
+ {id:'boots',name:'Botas da Aurora',icon:'➤',price:300,description:'+28 velocidade',stat:'spd',value:28},
+ {id:'armor',name:'Armadura de Ônix',icon:'⛨',price:420,description:'+110 vida máxima',stat:'hp',value:110},
+ {id:'orb',name:'Orbe Astral',icon:'✦',price:600,description:'+16 dano por ataque',stat:'atk',value:16},
+ {id:'shield',name:'Proteção do Guardião',icon:'◈',price:650,description:'+180 vida máxima',stat:'hp',value:180},
+ {id:'wind',name:'Passos do Vento',icon:'❖',price:500,description:'+40 velocidade',stat:'spd',value:40}
+];
+const achievementDefs=[
+ {id:'first',name:'Primeira vitória',detail:'Vença uma partida',goal:1,key:'wins',reward:200},
+ {id:'hunter',name:'Caçador da Ruptura',detail:'Elimine 10 inimigos',goal:10,key:'kills',reward:300},
+ {id:'champion',name:'Veterano da Arena',detail:'Vença 5 partidas',goal:5,key:'wins',reward:500},
+ {id:'collector',name:'Colecionador de Lendas',detail:'Desbloqueie 5 heróis',goal:5,key:'unlocked',reward:250}
+];
+const SAVE='lendas-ruptura-prototype-v1';
+const defaults={gold:1100,gems:80,selected:'kael',unlocked:['kael','lyria','nyra'],items:[],equipped:'',wins:0,kills:0,games:0,claimed:[],passWeek:0,passMonth:0};
+let save;
+try{save={...defaults,...JSON.parse(localStorage.getItem(SAVE)||'{}')};}catch(_){save={...defaults};}
+function persist(){try{localStorage.setItem(SAVE,JSON.stringify(save));}catch(_){}}
+const owned=id=>save.unlocked.includes(id);
+const hero=id=>heroes.find(h=>h.id===id)||heroes[0];
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rand=(a,b)=>a+Math.random()*(b-a);
+const lanes=[
+ [BLUE,{x:225,y:215},{x:1605,y:215},RED],
+ [BLUE,{x:680,y:550},{x:1120,y:385},RED],
+ [BLUE,{x:305,y:850},{x:1580,y:850},RED]
+];
+let state='menu',g=null,scale=1,viewW=0,viewH=0,last=0,toastTimer=0;
+let pointer={x:0,y:0,active:false,id:null}, keys=new Set();
+const notice=(s)=>{ $('toast').textContent=s;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2200);};
+function refresh(){ $('gold').textContent=save.gold;$('gems').textContent=save.gems;$('heroCount').textContent=`${save.unlocked.length}/15`;renderFeatured();}
+function renderFeatured(){ $('featured').innerHTML=heroes.slice(0,7).map(h=>`<button class="heroCard ${save.selected===h.id?'active':''}" style="--h:${h.color}66" data-hero="${h.id}"><span class="portrait">${h.icon}</span><strong>${h.name}</strong><small>${h.role}</small>${owned(h.id)?'':'<span class="lock">🔒</span>'}</button>`).join(''); $('featured').querySelectorAll('[data-hero]').forEach(b=>b.addEventListener('click',()=>selectHero(b.dataset.hero)));}
+function selectHero(id){const h=hero(id);if(!owned(id)){openModal('herois');notice(`${h.name} custa ${h.price} moedas`);return;}save.selected=id;persist();refresh();notice(`${h.name} selecionado`);}
+const btn=(s,fn)=>`<button data-action="${fn}">${s}</button>`;
+function openModal(type){$('overlay').classList.remove('hidden');let title='',caption='',body='';
+ if(type==='herois'){title='Lendas disponíveis';caption='ELENCO ORIGINAL · 15 PERSONAGENS';body=`<div class="cardgrid">${heroes.map(h=>`<article class="shopcard"><span class="badge">${h.icon} ${h.role.toUpperCase()}</span><b>${h.name}</b><div class="describe">${h.power}<br>Vida ${h.hp} · Ataque ${h.atk}</div>${btn(owned(h.id)?(save.selected===h.id?'✓ SELECIONADO':'SELECIONAR'):`DESBLOQUEAR · ◈ ${h.price}`,`hero:${h.id}`)}</article>`).join('')}</div>`;}
+ else if(type==='store'){title='Loja da Ruptura';caption='COMPRAS REAIS INDISPONÍVEIS NESTE PROTÓTIPO';body=`<p class="bodycopy">Diamantes e passes estão representados aqui para testes de interface. Esta versão <strong>não cobra dinheiro</strong>, não conecta à Google Play Faturamento e não entrega diamantes comprados.</p><div class="sectiontitle">PACOTES DE DIAMANTES · PRÉVIA</div><div class="cardgrid">${[['80 diamantes','R$ 4,90'],['250 diamantes','R$ 12,90'],['600 diamantes','R$ 24,90']].map(([n,p])=>`<article class="shopcard"><span class="badge">◆ MOEDA PREMIUM</span><b>${n}</b><div class="describe">Preço ilustrativo ${p}. Configuração futura no Play Console.</div><button disabled>PAGAMENTO DESATIVADO</button></article>`).join('')}</div><div class="sectiontitle">MAIS LOJAS</div><div class="quicknav">${btn('HERÓIS','open:herois')}${btn('ARMAS','open:armas')}${btn('PASSES','open:pass')}</div>`;}
+ else if(type==='armas'){title='Arsenal das Lendas';caption='ITENS PERMANENTES · MOEDAS DE JOGO';body=`<p class="bodycopy">Compre equipamentos com moedas ganhas em partidas. Você pode equipar um por vez para as partidas offline.</p><div class="cardgrid">${weapons.map(w=>`<article class="shopcard"><span class="badge">${w.icon} EQUIPAMENTO</span><b>${w.name}</b><div class="describe">${w.description}</div>${btn(save.equipped===w.id?'✓ EQUIPADO':save.items.includes(w.id)?'EQUIPAR':`COMPRAR · ◈ ${w.price}`,`item:${w.id}`)}</article>`).join('')}</div>`;}
+ else if(type==='pass'){title='Passe da Ruptura';caption='DEMONSTRAÇÃO · VALIDADE LOCAL';let now=Date.now();body=`<p class="bodycopy">Pessoas com passes ganhariam recompensas cosméticas, missões e benefícios. Neste protótipo, as ativações usam apenas <strong>diamantes de teste</strong>, não são assinaturas e não cobram nada pela Google Play.</p><div class="cardgrid"><article class="shopcard"><span class="badge">✧ 7 DIAS</span><b>Passe Semanal</b><div class="describe">7 dias de status local de teste. ${save.passWeek>now?`Ativo por mais ${Math.ceil((save.passWeek-now)/86400000)} dia(s).`:'Inativo.'}</div>${btn(save.passWeek>now?'✓ ATIVO':'ATIVAR TESTE · ◆ 30','pass:week')}</article><article class="shopcard"><span class="badge">✶ 30 DIAS</span><b>Passe Mensal</b><div class="describe">30 dias de status local de teste. ${save.passMonth>now?`Ativo por mais ${Math.ceil((save.passMonth-now)/86400000)} dia(s).`:'Inativo.'}</div>${btn(save.passMonth>now?'✓ ATIVO':'ATIVAR TESTE · ◆ 60','pass:month')}</article></div><div class="modalFooter">Planejamento comercial: passe mensal R$ 19,90. Preço, benefícios, termos e produtos definitivos dependerão da configuração e aprovação no Play Console.</div>`;}
+ else if(type==='achievements'){title='Conquistas';caption='DESAFIOS LOCAIS · PROGRESSO SALVO';body=`<div class="cardgrid">${achievementDefs.map(a=>{let x=a.key==='unlocked'?save.unlocked.length:save[a.key];return `<article class="shopcard"><span class="badge">★ ${Math.min(x,a.goal)}/${a.goal}</span><b>${a.name}</b><div class="describe">${a.detail} · Recompensa ◈ ${a.reward}</div>${btn(save.claimed.includes(a.id)?'✓ RESGATADO':x>=a.goal?'RESGATAR':'BLOQUEADO',`achievement:${a.id}`)}</article>`}).join('')}</div>`;}
+ else if(type==='quit'){title='Sair da partida?';caption='A PARTIDA SERÁ ABANDONADA';body=`<p class="bodycopy">Seu progresso de partida será perdido. Compras e heróis desbloqueados permanecem salvos.</p><div class="actions">${btn('CONTINUAR','resume')}${btn('SAIR PARA MENU','quit')}</div>`;}
+ else if(type==='result'){let win=g && g.win;title=win?'VITÓRIA!':'DERROTA';caption='FIM DA BATALHA';body=`<p class="bodycopy">${win?'O núcleo inimigo foi destruído.':'Seu núcleo caiu, mas a lenda continua.'}</p><div class="sectiontitle">Abates ${g.kills} · Tempo ${Math.floor(g.time/60)}m ${Math.floor(g.time%60)}s</div><p class="bodycopy">Recompensa da partida: ◈ ${g.reward} moedas</p>${btn('VOLTAR AO MENU','quit')}`;}
+ $('modalTitle').textContent=title;$('modalCaption').textContent=caption;$('modalBody').innerHTML=body;
+ $('modalBody').querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>handleAction(b.dataset.action)));
+}
+function handleAction(a){if(a.startsWith('open:')){openModal(a.split(':')[1]);return;}
+ const [type,id]=a.split(':');
+ if(type==='hero'){let h=hero(id);if(!owned(id)){if(save.gold<h.price){notice('Moedas insuficientes');return;}save.gold-=h.price;save.unlocked.push(id);notice(`${h.name} desbloqueado!`);}save.selected=id;persist();refresh();openModal('herois');}
+ if(type==='item'){let w=weapons.find(v=>v.id===id);if(!save.items.includes(id)){if(save.gold<w.price){notice('Moedas insuficientes');return;}save.gold-=w.price;save.items.push(id);}save.equipped=id;persist();refresh();openModal('armas');notice(`${w.name} equipado`);}
+ if(type==='pass'){let k=id==='week'?'passWeek':'passMonth';if(save[k]>Date.now()){notice('Passe de teste já ativo');return;}let cost=id==='week'?30:60;if(save.gems<cost){notice('Diamantes de teste insuficientes');return;}save.gems-=cost;save[k]=Date.now()+(id==='week'?7:30)*86400000;persist();refresh();openModal('pass');notice('Passe de teste ativado (sem pagamento)');}
+ if(type==='achievement'){let ac=achievementDefs.find(x=>x.id===id);let score=ac.key==='unlocked'?save.unlocked.length:save[ac.key];if(score>=ac.goal&&!save.claimed.includes(id)){save.gold+=ac.reward;save.claimed.push(id);persist();refresh();openModal('achievements');notice(`+${ac.reward} moedas recebidas`);}}
+ if(a==='resume')closeModal();if(a==='quit'){closeModal();endToMenu();}
+}
+function closeModal(){ $('overlay').classList.add('hidden');if(state==='battle')g.paused=false;}
+function resize(){viewW=window.innerWidth;viewH=window.innerHeight;let dpi=Math.min(2,devicePixelRatio||1);canvas.width=Math.round(viewW*dpi);canvas.height=Math.round(viewH*dpi);ctx.setTransform(dpi,0,0,dpi,0,0);}
+window.addEventListener('resize',resize);resize();
+function entity(x,y,team,hp,atk,range,speed,kind){return {x,y,team,hp,maxHp:hp,atk,range,speed,kind,r:kind==='hero'?23:kind==='tower'?32:kind==='core'?48:12,cd:rand(0,.5),dead:false,respawn:0,level:1,shield:0};}
+function tower(x,y,team){return entity(x,y,team,420,22,250,0,'tower');}
+function initialGame(){let h=hero(save.selected),equipment=weapons.find(x=>x.id===save.equipped),equip=equipment?{[equipment.stat]:equipment.value}:{};
+ let pl=entity(BLUE.x+80,BLUE.y-65,0,h.hp+(equip.hp||0),h.atk+(equip.atk||0),h.range,h.spd+(equip.spd||0),'hero');pl.r=22;pl.def=h;pl.xp=0;pl.skillCd=[0,0,0];
+ let en=entity(RED.x-95,RED.y+85,1,350,29,135,182,'hero');en.def=hero('vex');en.skillCd=[0,0,0];
+ return {time:0,player:pl,enemy:en,units:[],shots:[],particles:[],towers:[tower(535,575,0),tower(540,247,0),tower(535,850,0),tower(1275,400,1),tower(1260,215,1),tower(1275,845,1)],cores:[entity(BLUE.x,BLUE.y,0,1100,0,0,0,'core'),entity(RED.x,RED.y,1,1100,0,0,0,'core')], spawn:0,kills:0,paused:false,ended:false,win:false,reward:0,cam:{x:0,y:0}};
+}
+function startBattle(){if(!owned(save.selected)){notice('Escolha um herói desbloqueado');return;}g=initialGame();state='battle';document.body.classList.add('playing');$('hud').classList.remove('hidden');closeModal();g.cam.x=clamp(g.player.x-viewW/2,0,Math.max(0,W-viewW));g.cam.y=clamp(g.player.y-viewH/2,0,Math.max(0,H-viewH));$('battleInfo').textContent='Proteja seu núcleo e destrua o núcleo vermelho.';refreshHud();}
+function endToMenu(){state='menu';document.body.classList.remove('playing');$('hud').classList.add('hidden');g=null;refresh();}
+function endGame(win){if(g.ended)return;g.ended=true;g.win=win;g.reward=(win?280:90)+g.kills*22;save.games++;save.wins+=win?1:0;save.kills+=g.kills;save.gold+=g.reward;persist();refresh();openModal('result');}
+function closest(from,team,max=Infinity){let choices=[...g.units,...g.towers,...g.cores,g.player,g.enemy];let pick=null,d=max;for(let e of choices){if(e.dead||e.team===team||e.hp<=0||e===from)continue;let dd=dist(from,e);if(dd<d){pick=e;d=dd;}}return pick;}
+function shoot(src,target,damage,speed=590,color){if(!target||target.dead)return;g.shots.push({x:src.x,y:src.y,target,team:src.team,dmg:damage,speed,color:color||(src.team?'#ff8289':'#9fd2ff'),life:2.1});}
+function sparks(x,y,c,count=7){for(let i=0;i<count;i++){let ang=rand(0,Math.PI*2);g.particles.push({x,y,vx:Math.cos(ang)*rand(20,115),vy:Math.sin(ang)*rand(20,115),life:rand(.2,.55),max:.55,color:c,r:rand(2,5)});}}
+function harm(target,dmg,src){if(target.dead||target.hp<=0)return;let amount=Math.max(1,dmg-(target.shield||0));target.hp-=amount;sparks(target.x,target.y,target.team?'#ff819e':'#a3c9ff',3);
+ if(target.hp<=0){target.hp=0;target.dead=true;sparks(target.x,target.y,'#f9d994',20);if(target.kind==='core'){endGame(target.team===1);return;}if(target.kind==='hero'){target.respawn=10;if(src&&src.team===0){g.kills++;g.player.xp+=55;}}if(target.kind==='minion'&&src&&src.team===0){g.player.xp+=10;}if(target.kind==='tower'&&src&&src.team===0){g.player.xp+=38;}}
+}
+function spawnMinions(){for(let team=0;team<2;team++)for(let lane=0;lane<3;lane++)for(let i=0;i<2;i++){let base=team?RED:BLUE, m=entity(base.x+rand(-20,20),base.y+rand(-20,20),team,100,13,90,125,'minion');m.lane=lane;m.step=0;m.path=team?lanes[lane].slice().reverse():lanes[lane];m.x+=i*16;m.y+=i*13;g.units.push(m);}}
+function autoAttack(a,dt){if(a.dead)return;a.cd=Math.max(0,a.cd-dt);let t=closest(a,a.team,a.range);if(t && a.cd===0){shoot(a,t,a.atk,a.kind==='tower'?760:650);a.cd=a.kind==='tower'?1.1:a.kind==='hero'?.9:1.4;}}
+function motionToward(a,target,dt){let d=dist(a,target);if(d<2)return;let step=Math.min(a.speed*dt,d);a.x+=(target.x-a.x)*step/d;a.y+=(target.y-a.y)*step/d;a.x=clamp(a.x,22,W-22);a.y=clamp(a.y,22,H-22);}
+function performAttack(){if(state!=='battle'||g.ended||g.paused||g.player.dead)return;let p=g.player,t=closest(p,0,p.range+50);if(!t){notice('Aproxime-se de um inimigo');return;}if(p.cd>0)return;shoot(p,t,p.atk*1.25,710,p.def.color);p.cd=.43;sparks(p.x,p.y,p.def.color,6);}
+function castSkill(i){if(state!=='battle'||g.ended||g.paused)return;let p=g.player;if(p.dead||p.skillCd[i]>0)return;let target=closest(p,0,450);p.skillCd[i]=[5,9,20][i];
+ if(i===0){if(!target){p.skillCd[i]=0;notice('Inimigo fora de alcance');return;}shoot(p,target,p.atk*2.6,950,'#ffb5ed');sparks(p.x,p.y,p.def.color,14);$('battleInfo').textContent=`${p.def.power}!`;}
+ if(i===1){let heal=Math.round(p.maxHp*.32);p.hp=Math.min(p.maxHp,p.hp+heal);p.shield=10;sparks(p.x,p.y,'#92fcd4',20);$('battleInfo').textContent=`Cura +${heal} · escudo temporário`;}
+ if(i===2){let hit=0;for(let e of [...g.units,...g.towers,g.enemy]){if(!e.dead&&e.team===1&&dist(p,e)<240){harm(e,p.atk*3.5,p);hit++;}}sparks(p.x,p.y,'#f7c571',36);$('battleInfo').textContent=`Ruptura Suprema! ${hit} atingidos`;}
+}
+function update(dt){if(!g||g.paused||g.ended)return;g.time+=dt;g.spawn-=dt;if(g.spawn<=0){spawnMinions();g.spawn=10.5;}
+ let p=g.player,en=g.enemy;
+ let dx=pointer.active?pointer.x:0,dy=pointer.active?pointer.y:0;
+ if(keys.has('a')||keys.has('arrowleft'))dx--;if(keys.has('d')||keys.has('arrowright'))dx++;
+ if(keys.has('w')||keys.has('arrowup'))dy--;if(keys.has('s')||keys.has('arrowdown'))dy++;
+ let size=Math.hypot(dx,dy);if(size>0&&!p.dead){let k=Math.min(1,size)/size;p.x=clamp(p.x+dx*k*p.speed*dt,16,W-16);p.y=clamp(p.y+dy*k*p.speed*dt,16,H-16);}
+ for(let i=0;i<3;i++)p.skillCd[i]=Math.max(0,p.skillCd[i]-dt);p.shield=Math.max(0,p.shield-4*dt);
+ if(p.dead){p.respawn-=dt;if(p.respawn<=0){p.dead=false;p.hp=p.maxHp;p.x=BLUE.x+70;p.y=BLUE.y-70;notice('Você renasceu!');}}
+ if(en.dead){en.respawn-=dt;if(en.respawn<=0){en.dead=false;en.hp=en.maxHp;en.x=RED.x-80;en.y=RED.y+80;}}
+ if(!en.dead){let t=closest(en,1,800);if(t&&dist(en,t)>en.range-10)motionToward(en,t,dt);else if(!t)motionToward(en,BLUE,dt);autoAttack(en,dt);}
+ if(!p.dead)autoAttack(p,dt);for(let t of g.towers)if(!t.dead)autoAttack(t,dt);
+ for(let m of g.units){if(m.dead)continue;let enemy=closest(m,m.team,145);if(enemy){if(dist(m,enemy)>m.range-5)motionToward(m,enemy,dt);else autoAttack(m,dt);}else{let step=m.path[Math.min(m.step+1,m.path.length-1)];if(dist(m,step)<26&&m.step<m.path.length-2){m.step++;step=m.path[m.step+1];}motionToward(m,step,dt);}}
+ g.units=g.units.filter(m=>!m.dead);
+ for(let b of g.shots){b.life-=dt;if(b.life<=0||b.target.dead){b.life=0;continue;}let d=dist(b,b.target);if(d<=b.speed*dt+12){harm(b.target,b.dmg,{team:b.team});b.life=0;sparks(b.target.x,b.target.y,b.color,4);}else{b.x+=(b.target.x-b.x)/d*b.speed*dt;b.y+=(b.target.y-b.y)/d*b.speed*dt;}}
+ g.shots=g.shots.filter(b=>b.life>0);
+ for(let f of g.particles){f.x+=f.vx*dt;f.y+=f.vy*dt;f.life-=dt;}g.particles=g.particles.filter(f=>f.life>0);
+ if(p.xp>=75*p.level){p.xp-=75*p.level;p.level++;p.maxHp+=24;p.hp=Math.min(p.maxHp,p.hp+70);p.atk+=4;notice(`NÍVEL ${p.level}!`);}
+ if(g.time>900)endGame(g.cores[1].hp<g.cores[0].hp);
+ g.cam.x+=(clamp(p.x-viewW/2,0,Math.max(0,W-viewW))-g.cam.x)*Math.min(1,8*dt);g.cam.y+=(clamp(p.y-viewH/2,0,Math.max(0,H-viewH))-g.cam.y)*Math.min(1,8*dt);
+ refreshHud();
+}
+function refreshHud(){if(!g)return;let p=g.player;$('hudHero').textContent=p.def.name;$('hudLevel').textContent=`NÍVEL ${p.level}`;$('hpBar').style.width=`${Math.round(100*p.hp/p.maxHp)}%`;$('xpBar').style.width=`${Math.round(100*p.xp/(75*p.level))}%`;
+ $('timer').textContent=`${String(Math.floor(g.time/60)).padStart(2,'0')}:${String(Math.floor(g.time%60)).padStart(2,'0')}`;$('blueScore').textContent=`${Math.ceil(g.cores[0].hp/g.cores[0].maxHp*100)}%`;$('redScore').textContent=`${Math.ceil(g.cores[1].hp/g.cores[1].maxHp*100)}%`;
+ for(let i=0;i<3;i++){let b=$(['skill1','skill2','skill3'][i]);b.classList.toggle('onCooldown',p.skillCd[i]>.1);b.dataset.cd=String(Math.ceil(p.skillCd[i]));}
+}
+function roundedRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
+function drawBackground(){let gr=ctx.createLinearGradient(0,0,W,H);gr.addColorStop(0,'#111d37');gr.addColorStop(.52,'#101a2c');gr.addColorStop(1,'#26172f');ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle='#ffffff08';ctx.lineWidth=1;for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+ // Decorative arena terrain, stones and runes are deterministic.
+ for(let i=0;i<125;i++){let x=(i*127.7+30)%W,y=(i*263.3+64)%H;let a=Math.sin(i)*10;ctx.fillStyle=i%3===0?'#3a335044':'#46626733';ctx.beginPath();ctx.ellipse(x,y,randShape(i),randShape(i+3),a,0,Math.PI*2);ctx.fill();}
+ for(let li=0;li<lanes.length;li++){let pts=lanes[li];ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.strokeStyle='#13182b';ctx.lineWidth=85;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();ctx.strokeStyle='#3c3c61';ctx.lineWidth=72;ctx.stroke();ctx.strokeStyle='#53476588';ctx.lineWidth=1.5;ctx.setLineDash([16,28]);ctx.stroke();ctx.setLineDash([]);}
+ for(let i=0;i<18;i++){let x=110+i*93,y=i%2===0?110:905;drawStone(x,y,i);}
+}
+function randShape(n){return 5+((n*17)%13)}
+function drawStone(x,y,i){ctx.save();ctx.translate(x,y);ctx.rotate(i);ctx.strokeStyle='#9ca2d822';ctx.lineWidth=3;ctx.strokeRect(-16,-16,32,32);ctx.strokeRect(-10,-10,20,20);ctx.restore();}
+function drawUnit(u){if(u.dead)return;let friendly=u.team===0,co=friendly?'#8bbaff':'#ff798d';ctx.save();ctx.translate(u.x,u.y);ctx.shadowColor=co;ctx.shadowBlur=u.kind==='hero'?27:13;
+ if(u.kind==='core'){ctx.fillStyle=co+'35';ctx.beginPath();ctx.arc(0,0,68,0,Math.PI*2);ctx.fill();ctx.rotate(Math.PI/4);ctx.fillStyle=co;ctx.fillRect(-33,-33,66,66);ctx.fillStyle='#f5ebff';ctx.fillRect(-16,-16,32,32);ctx.rotate(-Math.PI/4);}
+ else if(u.kind==='tower'){ctx.fillStyle='#1f2b4d';ctx.strokeStyle=co;ctx.lineWidth=6;ctx.beginPath();for(let i=0;i<6;i++){let a=i*Math.PI/3;ctx.lineTo(Math.cos(a)*32,Math.sin(a)*32);}ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle=co;ctx.beginPath();ctx.arc(0,0,10,0,Math.PI*2);ctx.fill();}
+ else if(u.kind==='minion'){ctx.fillStyle=co;ctx.beginPath();ctx.arc(0,0,11,0,Math.PI*2);ctx.fill();ctx.fillStyle='#edecf7';ctx.beginPath();ctx.arc(-3,-3,4,0,Math.PI*2);ctx.fill();}
+ else {let c=u.def&&u.def.color||co;ctx.shadowColor=c;ctx.fillStyle=c+'55';ctx.beginPath();ctx.arc(0,0,31,0,Math.PI*2);ctx.fill();ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(0,-26);ctx.lineTo(22,14);ctx.lineTo(0,24);ctx.lineTo(-22,14);ctx.closePath();ctx.fill();ctx.fillStyle='#fff2f5';ctx.beginPath();ctx.arc(0,-6,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#29213b';ctx.fillRect(-6,-8,4,3);ctx.fillRect(3,-8,4,3);ctx.fillStyle='#ffffff';ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.fillText(u===g.player?u.def.name:'Rival',0,-42);}
+ ctx.restore();if(u.kind!=='minion'){let width=u.kind==='core'?110:u.kind==='tower'?64:62,yy=u.y-u.r-20;ctx.fillStyle='#120e21';ctx.fillRect(u.x-width/2,yy,width,7);ctx.fillStyle=co;ctx.fillRect(u.x-width/2,yy,width*clamp(u.hp/u.maxHp,0,1),7);}
+}
+function draw(){ctx.clearRect(0,0,viewW,viewH);if(!g){g=initialGame();g.cam.x=350;g.cam.y=230;}
+ ctx.save();ctx.translate(-g.cam.x,-g.cam.y);drawBackground();for(let c of g.cores)drawUnit(c);for(let t of g.towers)drawUnit(t);for(let m of g.units)drawUnit(m);drawUnit(g.enemy);drawUnit(g.player);
+ for(let b of g.shots){ctx.fillStyle=b.color;ctx.shadowColor=b.color;ctx.shadowBlur=15;ctx.beginPath();ctx.arc(b.x,b.y,7,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}
+ for(let f of g.particles){ctx.fillStyle=f.color;ctx.globalAlpha=Math.max(0,f.life/f.max);ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;ctx.restore();
+ if(state==='menu'){g=null;return;}
+ // Compact minimap
+ const mw=117,mh=64,mx=viewW/2-mw/2,my=viewH-76;if(viewH>330){ctx.fillStyle='#080b22cc';roundedRect(mx-5,my-5,mw+10,mh+10,6);ctx.fill();ctx.fillStyle='#263049';ctx.fillRect(mx,my,mw,mh);for(let l of lanes){ctx.beginPath();ctx.moveTo(mx+l[0].x/W*mw,my+l[0].y/H*mh);for(let j=1;j<l.length;j++)ctx.lineTo(mx+l[j].x/W*mw,my+l[j].y/H*mh);ctx.strokeStyle='#9994b366';ctx.lineWidth=2;ctx.stroke();}for(let p of [g.player,g.enemy,...g.cores])if(!p.dead){ctx.fillStyle=p.team?'#ff7488':'#9ac8ff';ctx.fillRect(mx+p.x/W*mw-2,my+p.y/H*mh-2,4,4);}}
+}
+function loop(t){let dt=Math.min(.05,(t-last)/1000||.016);last=t;if(state==='battle'&&g)update(dt);draw();requestAnimationFrame(loop);}requestAnimationFrame(loop);
+const keyAction={'j':()=>performAttack(),' ':()=>performAttack(),'q':()=>castSkill(0),'e':()=>castSkill(1),'r':()=>castSkill(2)};
+document.addEventListener('keydown',ev=>{let key=ev.key.toLowerCase();keys.add(key);if(state==='battle'&&keyAction[key]){ev.preventDefault();keyAction[key]();}});
+document.addEventListener('keyup',ev=>keys.delete(ev.key.toLowerCase()));
+const joy=$('joystick'),stick=$('stick');function joystickEvent(ev){let r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=ev.clientX-cx,dy=ev.clientY-cy,m=Math.hypot(dx,dy),radius=r.width*.35,k=m>radius?radius/m:1;pointer.x=dx*k/radius;pointer.y=dy*k/radius;stick.style.transform=`translate(${dx*k}px,${dy*k}px)`;}
+joy.addEventListener('pointerdown',ev=>{if(pointer.id!==null)return;pointer.id=ev.pointerId;pointer.active=true;joy.setPointerCapture(ev.pointerId);joystickEvent(ev);});joy.addEventListener('pointermove',ev=>{if(pointer.id===ev.pointerId)joystickEvent(ev);});function releaseJoy(ev){if(pointer.id===ev.pointerId){pointer.active=false;pointer.id=null;pointer.x=0;pointer.y=0;stick.style.transform='';}}joy.addEventListener('pointerup',releaseJoy);joy.addEventListener('pointercancel',releaseJoy);
+$('attack').addEventListener('pointerdown',ev=>{ev.preventDefault();performAttack()});$('skill1').onclick=()=>castSkill(0);$('skill2').onclick=()=>castSkill(1);$('skill3').onclick=()=>castSkill(2);
+$('play').onclick=startBattle;$('openHeroes').onclick=()=>openModal('herois');$('viewRoster').onclick=()=>openModal('herois');$('openWeapons').onclick=()=>openModal('armas');$('openStore').onclick=()=>openModal('store');$('openPass').onclick=()=>openModal('pass');$('openAchievements').onclick=()=>openModal('achievements');$('quit').onclick=()=>{g.paused=true;openModal('quit')};$('closeModal').onclick=()=>{if(g&&g.ended)endToMenu();closeModal()};
+window.addEventListener('blur',()=>{pointer.active=false;pointer.id=null;keys.clear();});
+refresh();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'br.com.lendasdaruptura'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'br.com.lendasdaruptura'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '0.1.0-alpha'
+    }
+    signingConfigs {
+        release {
+            def storePath = System.getenv('UPLOAD_KEYSTORE_PATH')
+            if (storePath && file(storePath).exists()) {
+                storeFile file(storePath)
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes {
+        debug { debuggable true }
+        release {
+            minifyEnabled false
+            def storePath = System.getenv('UPLOAD_KEYSTORE_PATH')
+            if (storePath && file(storePath).exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
