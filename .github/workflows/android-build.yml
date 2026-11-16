@@ -53,6 +53,14 @@ jobs:
           name: Lendas-da-Ruptura-APK-teste
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+      - name: Compilar AAB de release sem assinatura para etapa de assinatura local
+        run: gradle --no-daemon :app:bundleRelease
+      - name: Disponibilizar AAB SEM ASSINATURA (não enviar à Play Console)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lendas-da-Ruptura-AAB-NAO-ASSINADO
+          path: app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
       - name: Compilar AAB release somente com assinatura estável
         id: release
         shell: bash
