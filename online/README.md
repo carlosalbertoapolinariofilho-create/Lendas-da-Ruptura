@@ -2,6 +2,14 @@
 
 Esta pasta é um projeto **novo**, separado do APK 2D v0.1, para evoluir o jogo rumo a um MOBA original no Android. Não copie arte, personagens, nomes, marcas ou mapas de jogos comerciais existentes.
 
+## 🎮 Baixar a versão 3D de teste para Android
+
+**[Baixar APK 3D v0.2 diretamente no celular](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.2.0-3d-alpha/Lendas-da-Ruptura-3D-alpha.apk)**
+
+[Consultar a página da versão 3D](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/tag/v0.2.0-3d-alpha)
+
+O APK foi **gerado com sucesso no GitHub Actions**, mas ainda precisa ser testado em aparelho físico. É um **APK DEBUG** de pré-alfa, para treino **offline** e testes de interface. O servidor 1x1/ranqueada experimental está desenvolvido, porém **não está hospedado na internet**; portanto este APK não oferece PvP online público neste momento. Ele não é um AAB assinado para envio à Play Console.
+
 ## O que já existe aqui
 
 - **Godot 4.5+** com arena 3D procedural e câmera isométrica, três rotas, torres e bases, movimentação WASD e toque, heróis estilizados temporários e botões de combate.
