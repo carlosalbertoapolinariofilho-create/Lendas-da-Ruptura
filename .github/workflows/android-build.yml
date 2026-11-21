@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   android:
@@ -53,6 +53,19 @@ jobs:
           name: Lendas-da-Ruptura-APK-teste
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+      - name: Publicar APK diretamente em Releases para baixar pelo celular
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/Lendas-da-Ruptura-v0.1-Teste.apk
+          if ! gh release view v0.1.0-alpha >/dev/null 2>&1; then
+            gh release create v0.1.0-alpha --target "$GITHUB_SHA" --title "Lendas da Ruptura — teste Android v0.1" --prerelease --notes "Protótipo offline 2D para teste em Android. Baixe o APK abaixo; ele ainda NÃO contém PvP, gráficos 3D ou compras reais. Este APK debug não é o AAB de publicação da Play Store."
+          fi
+          gh release upload v0.1.0-alpha dist/Lendas-da-Ruptura-v0.1-Teste.apk --clobber
       - name: Compilar AAB de release sem assinatura para etapa de assinatura local
         run: gradle --no-daemon :app:bundleRelease
       - name: Disponibilizar AAB SEM ASSINATURA (não enviar à Play Console)
