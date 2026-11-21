@@ -2,6 +2,17 @@
 
 Esta pasta é um projeto **novo**, separado do APK 2D v0.1, para evoluir o jogo rumo a um MOBA original no Android. Não copie arte, personagens, nomes, marcas ou mapas de jogos comerciais existentes.
 
+## 🌐 Jogar pela Web (sem instalar nada)
+
+**[Abrir Lendas da Ruptura 3D no navegador](https://lendas-da-ruptura-web-production.up.railway.app/)**
+
+- Funciona em navegadores com suporte a WebGL 2.0 e WebAssembly; preferir Chrome ou Firefox.
+- Recomendado modo paisagem no celular e Wi-Fi estável.
+- A tela abre o protótipo 3D, que tenta conectar automaticamente ao servidor Railway.
+- Para 1x1, cada jogador abre a página em um navegador/dispositivo e entra na mesma fila (casual ou ranqueada de teste).
+- Pode usar treino offline sem segundo jogador. Ainda não é 5x5 completo nem sistema ranqueado final.
+- Os perfis são de testes, não use nomes ou senhas sensíveis. A hospedagem em Railway poderá gerar custos.
+
 ## 🎮 Baixar a versão 3D de teste para Android
 
 **[Baixar APK 3D ONLINE v0.3 diretamente no celular](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.3.0-online-alpha/Lendas-da-Ruptura-3D-Online-v0.3.apk)**

@@ -1,0 +1,42 @@
+name: Lendas — verificar link da versão web
+on:
+  push:
+    branches: [feature/arena-3d-multiplayer]
+    paths:
+      - '.github/workflows/smoke-web.yml'
+      - 'online/web/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar-web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Página web responde pelo HTTPS
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://lendas-da-ruptura-web-production.up.railway.app"
+          curl --retry 3 --retry-delay 2 -fLsS "$BASE/health" -o /tmp/lendas-health.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/lendas-health.json') as f: v=json.load(f)
+          assert v.get('ok') is True, v
+          print('Health Web OK:', v)
+          PY
+          curl --retry 3 --retry-delay 2 -fLsS "$BASE/" -o /tmp/lendas-index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          html=Path('/tmp/lendas-index.html').read_text()
+          assert 'index.js' in html, 'Loader do Godot ausente'
+          assert 'canvas' in html.lower(), 'Canvas do jogo ausente'
+          print('HTML público OK:',len(html),'bytes')
+          PY
+          for asset in index.js index.wasm index.pck; do
+            curl --retry 3 --retry-delay 2 -fsSI "$BASE/$asset" -o "/tmp/lendas-${asset}.headers"
+            grep -qiE '^HTTP/[0-9.]+ 200' "/tmp/lendas-${asset}.headers"
+            echo "Asset $asset OK"
+          done
