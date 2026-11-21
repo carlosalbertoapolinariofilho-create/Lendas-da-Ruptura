@@ -4,11 +4,11 @@ Esta pasta é um projeto **novo**, separado do APK 2D v0.1, para evoluir o jogo 
 
 ## 🎮 Baixar a versão 3D de teste para Android
 
-**[Baixar APK 3D v0.2 diretamente no celular](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.2.0-3d-alpha/Lendas-da-Ruptura-3D-alpha.apk)**
+**[Baixar APK 3D ONLINE v0.3 diretamente no celular](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.3.0-online-alpha/Lendas-da-Ruptura-3D-Online-v0.3.apk)**
 
-[Consultar a página da versão 3D](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/tag/v0.2.0-3d-alpha)
+[Consultar a página da versão 3D online](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/tag/v0.3.0-online-alpha)
 
-O APK foi **gerado com sucesso no GitHub Actions**, mas ainda precisa ser testado em aparelho físico. É um **APK DEBUG** de pré-alfa, para treino **offline** e testes de interface. O servidor 1x1/ranqueada experimental está desenvolvido, porém **não está hospedado na internet**; portanto este APK não oferece PvP online público neste momento. Ele não é um AAB assinado para envio à Play Console.
+O novo APK **0.3** conecta automaticamente via WSS ao servidor experimental hospedado em Railway. Há botões **Batalha 1x1** e **Ranqueada • Teste** e perfil de teste salvo no dispositivo. Para testar são necessários **dois celulares**, cada um com perfil próprio e o mesmo tipo de fila. O modo offline segue disponível. Este é um **APK de depuração**; o matchmaking e o servidor ainda NÃO foram validados ponta a ponta em dois aparelhos físicos, e o arquivo NÃO é AAB para a Play Console.
 
 ## O que já existe aqui
 
@@ -42,7 +42,7 @@ Instale o Godot 4.5 ou superior e abra a pasta `game3d` no editor. Execute a cen
 ## Limites desta versão
 
 - Visual 3D **provisório**, geometria básica. Falta modelagem/animação de produção.
-- Servidor não está hospedado automaticamente; projeto contém o código e Dockerfile.
+- Servidor 1x1 de testes atualmente hospedado no Railway (produção apenas como nome do ambiente; NÃO é um serviço pronto para uso público em grande escala). Endpoints: `https://lendas-multiplayer-alpha-production.up.railway.app/health` e `wss://lendas-multiplayer-alpha-production.up.railway.app/ws`.
 - Matchmaking limitado a 1x1; falta 5x5, múltiplos mapas, seleção com bans/picks, balanceamento e ranking robusto.
 - MMR é experimental; antes de lançar ranqueadas reais, precisa antifraude, auditoria de partidas, autenticação reforçada, moderação, reconexão e dados em banco gerenciado.
 - Loja, diamantes, passes e pagamentos **não estão ativos**. Não gerar cobranças sem Google Play Billing e verificação de compras em backend.

@@ -1,4 +1,4 @@
-name: Lendas 3D — APK Android para testes
+name: Lendas 3D Online — APK Android para testes
 on:
   push:
     branches: [feature/arena-3d-multiplayer]
@@ -55,24 +55,28 @@ jobs:
           EOF_SETTINGS
       - name: Importar projeto 3D
         run: /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --editor --quit
+      - name: Conferir conexão segura com o servidor e permissão de internet
+        run: |
+          grep -F 'PUBLIC_SERVER_URL = "wss://lendas-multiplayer-alpha-production.up.railway.app/ws"' online/game3d/scripts/main.gd
+          grep -F 'permissions/internet=true' online/game3d/export_presets.cfg
       - name: Exportar APK debug Android
         run: |
           mkdir -p online/game3d/build
-          /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --export-debug 'Android Teste 3D' build/Lendas-da-Ruptura-3D-alpha.apk
-          test -s online/game3d/build/Lendas-da-Ruptura-3D-alpha.apk
+          /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --export-debug 'Android Teste 3D' build/Lendas-da-Ruptura-3D-Online-v0.3.apk
+          test -s online/game3d/build/Lendas-da-Ruptura-3D-Online-v0.3.apk
       - name: Enviar APK de teste aos artefatos
         uses: actions/upload-artifact@v4
         with:
-          name: Lendas-da-Ruptura-3D-APK-alpha
-          path: online/game3d/build/Lendas-da-Ruptura-3D-alpha.apk
+          name: Lendas-da-Ruptura-3D-Online-APK-v0.3
+          path: online/game3d/build/Lendas-da-Ruptura-3D-Online-v0.3.apk
           if-no-files-found: error
       - name: Publicar APK 3D na página de versões (pré-alfa)
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh release view v0.2.0-3d-alpha >/dev/null 2>&1 || gh release create v0.2.0-3d-alpha --target "$GITHUB_SHA" --title 'Lendas da Ruptura — 3D pré-alfa' --prerelease --notes 'Teste 3D com treino offline. Servidor e 1x1 precisam ser hospedados para acesso pela internet; a versão NÃO é um MOBA 5x5 completo. APK de depuração para ARM64, não adequado para Play Console.'
-          gh release upload v0.2.0-3d-alpha online/game3d/build/Lendas-da-Ruptura-3D-alpha.apk --clobber
+          gh release view v0.3.0-online-alpha >/dev/null 2>&1 || gh release create v0.3.0-online-alpha --target "$GITHUB_SHA" --title 'Lendas da Ruptura — online 1x1 pré-alfa 0.3' --prerelease --notes 'Teste experimental com conexão automática WSS ao servidor Railway, perfil persistido localmente, arena 3D com modelos provisórios, fila 1x1 casual e ranqueada de teste. Precisa validar em dois celulares. Ainda NÃO é 5x5, produção ou AAB da Play Console.'
+          gh release upload v0.3.0-online-alpha online/game3d/build/Lendas-da-Ruptura-3D-Online-v0.3.apk --clobber
       - name: Apagar keystore temporária
         if: always()
         run: rm -f /tmp/lendas-debug.jks

@@ -1,5 +1,5 @@
 extends Node3D
-## Pré-alfa 3D para desktop/Android, conectada por WebSocket a servidor autoritativo.
+## Pré-alfa 3D online 1x1 para desktop/Android; servidor de testes Railway.
 ## Visual procedural de teste: não é arte 3D de produção.
 
 const HEROES = {
@@ -10,11 +10,14 @@ const HEROES = {
 	"orion": {"name": "Orion | Lutador", "color": Color("7ccc98")},
 	"selene": {"name": "Selene | Suporte", "color": Color("f6b1df")}
 }
+const PUBLIC_SERVER_URL = "wss://lendas-multiplayer-alpha-production.up.railway.app/ws"
 const W = 56.0
 const H = 34.0
 
 var ws: WebSocketPeer = WebSocketPeer.new()
 var server_connected := false
+var authenticated := false
+var login_with_stored_credentials := false
 var attempted := false
 var in_match := false
 var local_training := false
@@ -48,7 +51,8 @@ var touch_active := false
 func _ready() -> void:
 	_build_world()
 	_build_ui()
-	_set_status("Arena 3D carregada. Experimente Treino Offline ou conecte um servidor.")
+	_set_status("Conectando ao servidor de testes do Lendas da Ruptura...")
+	call_deferred("_connect")
 
 func _physics_process(delta: float) -> void:
 	var keys := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -86,8 +90,9 @@ func _process(_delta: float) -> void:
 	if state == WebSocketPeer.STATE_OPEN:
 		if not server_connected:
 			server_connected = true
-			_set_status("Conectado ao servidor. Autenticando perfil...")
-			if account_id != "" and stored_token != "":
+			_set_status("Conectado ao Railway. Autenticando seu perfil...")
+			login_with_stored_credentials = account_id != "" and stored_token != ""
+			if login_with_stored_credentials:
 				_send({"type": "login", "id": account_id, "token": stored_token})
 			else:
 				_send({"type": "register", "nickname": nickname_field.text})
@@ -98,19 +103,28 @@ func _process(_delta: float) -> void:
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if server_connected or attempted:
 			server_connected = false
+			authenticated = false
 			in_match = false
 			attempted = false
-			_set_status("Desconectado. Verifique o endereço do servidor e a rede.")
+			_clear_actors()
+			hud_panel.visible = false
+			launcher_panel.visible = true
+			matchmaking_panel.visible = true
+			_set_status("Conexão encerrada. Use Conectar para tentar novamente; treino offline segue disponível.")
 
 func _connect() -> void:
 	if local_training:
 		_stop_training()
+	if attempted:
+		_set_status("A conexão já está em andamento.")
+		return
 	var url := server_address.text.strip_edges()
 	if not (url.begins_with("ws://") or url.begins_with("wss://")):
 		_set_status("Use ws://IP:8080/ws em rede local ou wss:// em servidor público.")
 		return
 	attempted = true
 	server_connected = false
+	authenticated = false
 	ws = WebSocketPeer.new()
 	var err := ws.connect_to_url(url)
 	if err != OK:
@@ -126,6 +140,8 @@ func _send(packet: Dictionary) -> void:
 func _receive(packet: Dictionary) -> void:
 	match str(packet.get("type", "")):
 		"auth":
+			authenticated = true
+			login_with_stored_credentials = false
 			var p: Dictionary = packet.get("profile", {})
 			account_id = str(p.get("id", ""))
 			if packet.has("token"):
@@ -137,6 +153,7 @@ func _receive(packet: Dictionary) -> void:
 			mmr_label.text = "Liga: %s  |  MMR teste: %s" % [str(p.get("tier", "Prata")), str(p.get("mmr", 1000))]
 			_set_status("Perfil ativo: %s. Escolha o herói e busque uma partida." % str(p.get("nickname", "Jogador")))
 		"match_found":
+			_clear_actors()
 			in_match = true
 			own_team = int(packet.get("team", 0))
 			launcher_panel.visible = false
@@ -147,6 +164,7 @@ func _receive(packet: Dictionary) -> void:
 			current_snapshot = packet
 			_render_snapshot(packet)
 		"match_result":
+			_clear_actors()
 			in_match = false
 			hud_panel.visible = false
 			launcher_panel.visible = true
@@ -160,17 +178,30 @@ func _receive(packet: Dictionary) -> void:
 		"queue_cancelled":
 			_set_status("Busca cancelada.")
 		"error":
-			_set_status("Servidor: %s" % str(packet.get("message", "erro")))
+			var error_message := str(packet.get("message", "erro"))
+			if login_with_stored_credentials and error_message == "Login inválido":
+				login_with_stored_credentials = false
+				account_id = ""
+				stored_token = ""
+				var config := ConfigFile.new()
+				config.set_value("perfil", "id", "")
+				config.set_value("perfil", "token", "")
+				config.save("user://conta.cfg")
+				_set_status("Perfil de teste antigo indisponível. Criando novo perfil...")
+				_send({"type": "register", "nickname": nickname_field.text})
+			else:
+				_set_status("Servidor: %s" % error_message)
 		"selected":
 			_set_status("Herói escolhido: %s" % str(packet.get("hero", "")))
 
 func _queue(mode: String) -> void:
-	if not server_connected:
-		_set_status("Conecte-se ao servidor antes de buscar uma partida.")
+	if not server_connected or not authenticated:
+		_set_status("Aguarde a autenticação no servidor antes de buscar partida.")
 		return
 	if in_match:
 		return
-	local_training = false
+	if local_training:
+		_stop_training()
 	queue_mode = mode
 	_send({"type": "select_hero", "hero": selected_hero})
 	_send({"type": "queue", "mode": mode})
@@ -258,9 +289,17 @@ func _update_local_training(dt: float) -> void:
 	if left == 0:
 		_set_status("Treino concluído! Todos os alvos derrotados.")
 
+func _leave_match() -> void:
+	if local_training:
+		_stop_training()
+	elif server_connected or attempted:
+		_set_status("Saindo da partida. Desconexão conta como derrota em uma ranqueada experimental.")
+		ws.close(1000, "saida_do_jogador")
+	else:
+		_set_status("Nenhuma partida em andamento.")
+
 func _stop_training() -> void:
 	if not local_training:
-		_set_status("A saída da partida online será tratada pelo servidor em uma próxima versão.")
 		return
 	local_training = false
 	_clear_actors()
@@ -424,7 +463,7 @@ func _build_ui() -> void:
 	launcher_panel.add_theme_constant_override("separation",8)
 	top.add_child(launcher_panel)
 	server_address = LineEdit.new()
-	server_address.text = "ws://127.0.0.1:8080/ws"
+	server_address.text = PUBLIC_SERVER_URL
 	server_address.placeholder_text = "wss://meuservidor.com/ws"
 	server_address.custom_minimum_size = Vector2(275,45)
 	launcher_panel.add_child(server_address)
@@ -462,7 +501,7 @@ func _build_ui() -> void:
 	hud_panel.add_child(_button("Habilidade 1",func(): _combat(1)))
 	hud_panel.add_child(_button("Investida 2",func(): _combat(2)))
 	hud_panel.add_child(_button("Cura 3",func(): _combat(3)))
-	hud_panel.add_child(_button("Sair do treino",_stop_training))
+	hud_panel.add_child(_button("Sair da partida",_leave_match))
 	var mobile_guide := Label.new()
 	mobile_guide.text = "Controle: WASD ou arraste o lado esquerdo • espaço/1/2/3 ou botões de combate"
 	mobile_guide.position = Vector2(20,598)
@@ -475,7 +514,7 @@ func _build_ui() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
-		if event.pressed and event.position.x < get_viewport().get_visible_rect().size.x*0.43:
+		if event.pressed and event.position.x < get_viewport().get_visible_rect().size.x*0.43 and event.position.y > get_viewport().get_visible_rect().size.y*0.30:
 			touch_pointer = event.index
 			touch_origin = event.position
 			touch_active = true
