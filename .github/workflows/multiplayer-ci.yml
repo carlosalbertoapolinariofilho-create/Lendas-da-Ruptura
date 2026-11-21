@@ -26,3 +26,17 @@ jobs:
           npm install --no-audit --no-fund
           node --check src/server.js
           node --check src/engine.js
+
+  verificar-godot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Godot 4.5.2
+        run: |
+          curl -fsSL --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot/releases/download/4.5.2-stable/Godot_v4.5.2-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp/
+          chmod +x /tmp/Godot_v4.5.2-stable_linux.x86_64
+      - name: Importar e validar scripts e cena 3D
+        run: |
+          /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --editor --quit
+          /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --quit-after 60
