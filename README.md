@@ -2,6 +2,14 @@
 
 Protótipo original de arena MOBA para **Android**, criado para teste inicial na Play Store. **Esta versão é 2D, offline, contra bots; ainda NÃO é multiplayer 3D e NÃO tem pagamento real.**
 
+## 🌐 JOGAR NA WEB — Lendas da Ruptura 3D Online (0.3 pré-alfa)
+
+**🎮 [ABRIR O JOGO DIRETAMENTE NO NAVEGADOR](https://lendas-da-ruptura-web-production.up.railway.app/)**
+
+Não precisa baixar APK. Use navegador atualizado com WebGL 2.0 (Chrome/Firefox), preferencialmente em paisagem no celular. A arena 3D e o servidor de partidas 1x1 são experimentais; treinos offline também estão disponíveis. Dois jogadores podem tentar a mesma fila de testes casual ou ranqueada. **Ainda não é o MOBA 5x5 completo**, e a jogabilidade em aparelhos reais segue em validação.
+
+Código do cliente 3D: [branch arena 3D multiplayer](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/tree/feature/arena-3d-multiplayer/online/game3d). A branch `main` mantém o protótipo Android 2D anterior.
+
 ## ⬇️ Baixar e instalar o jogo (Android)
 
 **[Baixar APK de teste v0.1 diretamente](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.1.0-alpha/Lendas-da-Ruptura-v0.1-Teste.apk)**
