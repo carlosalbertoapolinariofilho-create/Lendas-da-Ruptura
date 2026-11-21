@@ -62,7 +62,7 @@ jobs:
           else
             git checkout --orphan web-dist
           fi
-          git rm -r --ignore-unmatch -q .
+          git rm -r -f --ignore-unmatch -q .
           git clean -ffdqx
           cp -a /tmp/lendas-web/. .
           git add -A
