@@ -36,7 +36,7 @@ jobs:
           echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
           SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -name sdkmanager -type f -print -quit)"
           test -x "$SDKMANAGER"
-          yes | "$SDKMANAGER" --licenses >/dev/null
+          (yes | "$SDKMANAGER" --licenses >/dev/null) || true
           "$SDKMANAGER" 'platform-tools' 'build-tools;35.0.0' 'platforms;android-35' 'platforms;android-36'
           keytool -genkeypair -noprompt -keystore /tmp/lendas-debug.jks -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname 'CN=Android Debug,O=Android,C=US'
           echo 'GODOT_ANDROID_KEYSTORE_DEBUG_PATH=/tmp/lendas-debug.jks' >> "$GITHUB_ENV"
