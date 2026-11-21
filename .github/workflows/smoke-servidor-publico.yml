@@ -1,0 +1,31 @@
+name: Lendas — teste real do servidor público 1x1
+on:
+  push:
+    branches: [feature/arena-3d-multiplayer]
+    paths:
+      - '.github/workflows/smoke-servidor-publico.yml'
+      - 'online/servidor/test/remote-smoke.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  testar-online:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: online/servidor
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar cliente de teste WebSocket
+        run: npm install --no-audit --no-fund
+      - name: Verificar HTTPS, dois jogadores e fila casual no Railway
+        env:
+          GAME_SERVER_URL: wss://lendas-multiplayer-alpha-production.up.railway.app/ws
+        run: node test/remote-smoke.mjs
