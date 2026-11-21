@@ -1,0 +1,74 @@
+name: Lendas da Ruptura 3D — publicar versao web
+on:
+  push:
+    branches: [feature/arena-3d-multiplayer]
+    paths:
+      - 'online/game3d/**'
+      - '.github/workflows/godot-web.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout do jogo 3D
+        uses: actions/checkout@v4
+      - name: Baixar Godot 4.5.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot/releases/download/4.5.2-stable/Godot_v4.5.2-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.5.2-stable_linux.x86_64
+      - name: Preparar modelos de exportacao Web, sem threads
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o /tmp/templates.tpz https://github.com/godotengine/godot/releases/download/4.5.2-stable/Godot_v4.5.2-stable_export_templates.tpz
+          echo "Templates Web disponíveis:"
+          unzip -Z1 /tmp/templates.tpz | grep '^templates/web' | head -30
+          unzip -q /tmp/templates.tpz 'templates/web*.zip' -d /tmp
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.5.2.stable"
+          cp /tmp/templates/web*.zip "$HOME/.local/share/godot/export_templates/4.5.2.stable/"
+      - name: Importar recursos do projeto
+        run: /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --editor --quit
+      - name: Exportar jogo WebGL2 + WASM
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lendas-web
+          /tmp/Godot_v4.5.2-stable_linux.x86_64 --headless --path online/game3d --export-release 'Web Navegador' /tmp/lendas-web/index.html
+          test -s /tmp/lendas-web/index.html
+          test -n "$(find /tmp/lendas-web -maxdepth 1 -name '*.wasm' -type f -print -quit)"
+          test -n "$(find /tmp/lendas-web -maxdepth 1 -name '*.pck' -type f -print -quit)"
+          cp online/web/Dockerfile /tmp/lendas-web/Dockerfile
+          cp online/web/nginx.conf /tmp/lendas-web/nginx.conf
+          ls -lh /tmp/lendas-web/
+      - name: Publicar build no branch web-dist para Railway
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin web-dist >/dev/null 2>&1; then
+            git fetch origin web-dist
+            git checkout -B web-dist FETCH_HEAD
+          else
+            git checkout --orphan web-dist
+          fi
+          git rm -r --ignore-unmatch -q .
+          git clean -ffdqx
+          cp -a /tmp/lendas-web/. .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "O conteúdo web já está atualizado"
+          else
+            git commit -m "build(web): publicar Lendas da Ruptura 3D v0.3 no navegador"
+            git push origin HEAD:refs/heads/web-dist
+          fi
