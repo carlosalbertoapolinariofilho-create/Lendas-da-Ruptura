@@ -2,6 +2,14 @@
 
 Protótipo original de arena MOBA para **Android**, criado para teste inicial na Play Store. **Esta versão é 2D, offline, contra bots; ainda NÃO é multiplayer 3D e NÃO tem pagamento real.**
 
+## ⬇️ Baixar e instalar o jogo (Android)
+
+**[Baixar APK de teste v0.1 diretamente](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases/download/v0.1.0-alpha/Lendas-da-Ruptura-v0.1-Teste.apk)**
+
+Ao baixar em um Android, abra o APK e autorize a instalação por essa fonte somente se confiar no aplicativo. Este é um **APK debug de teste**, não um lançamento oficial da Play Store. A versão atual é offline e possui apenas compras simuladas.
+
+[Abrir página de versões do jogo](https://github.com/carlosalbertoapolinariofilho-create/Lendas-da-Ruptura/releases)
+
 ## Funcionalidades que já estão no protótipo
 - Arena jogável com três rotas, minions, torres, núcleos e vitória/derrota;
 - 15 heróis cadastrados com papéis e atributos diferentes;
