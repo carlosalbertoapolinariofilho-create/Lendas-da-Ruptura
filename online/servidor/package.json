@@ -1,0 +1,12 @@
+{
+  "name": "lendas-da-ruptura-servidor",
+  "private": true,
+  "version": "0.2.0-alpha",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": { "ws": "8.18.3" }
+}

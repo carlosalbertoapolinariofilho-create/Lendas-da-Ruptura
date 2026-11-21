@@ -1,0 +1,28 @@
+name: Lendas — testes do servidor multiplayer
+on:
+  push:
+    paths:
+      - 'online/**'
+      - '.github/workflows/multiplayer-ci.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  teste-servidor:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: online/servidor
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar regras de combate e matchmaking
+        run: npm test
+      - name: Instalar dependências e validar servidor
+        run: |
+          npm install --no-audit --no-fund
+          node --check src/server.js
+          node --check src/engine.js
